@@ -1,4 +1,4 @@
-mod setup; 
+
 mod postprocess;
 
 use bevy::prelude::*;
@@ -12,6 +12,7 @@ fn main() {
             }),
             postprocess::PostProcessPlugin,
         ))                
-        .add_systems(Startup, setup::setup)
+        .add_systems(Startup, postprocess::setup)
+        .add_systems(Update, (postprocess::rotate, postprocess::update_settings))
         .run();
 }

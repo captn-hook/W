@@ -1,6 +1,5 @@
 
 use bevy::{
-    asset::ChangeWatcher,
     core_pipeline::{
         clear_color::ClearColorConfig, core_3d,
         fullscreen_vertex_shader::fullscreen_shader_vertex_state,
@@ -27,7 +26,6 @@ use bevy::{
         view::ViewTarget,
         RenderApp,
     },
-    utils::Duration,
 };
 
 pub struct PostProcessPlugin;
@@ -304,15 +302,15 @@ impl FromWorld for PostProcessPipeline {
 
 // This is the component that will get passed to the shader
 #[derive(Component, Default, Clone, Copy, ExtractComponent, ShaderType)]
-struct PostProcessSettings {
-    intensity: f32,
+pub struct PostProcessSettings {
+    pub intensity: f32,
     // WebGL2 structs must be 16 byte aligned.
     #[cfg(feature = "webgl2")]
     _webgl2_padding: Vec3,
 }
 
 /// Set up a simple 3D scene
-fn setup(
+pub fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
@@ -354,10 +352,10 @@ fn setup(
 }
 
 #[derive(Component)]
-struct Rotates;
+pub struct Rotates;
 
 /// Rotates any entity around the x and y axis
-fn rotate(time: Res<Time>, mut query: Query<&mut Transform, With<Rotates>>) {
+pub fn rotate(time: Res<Time>, mut query: Query<&mut Transform, With<Rotates>>) {
     for mut transform in &mut query {
         transform.rotate_x(0.55 * time.delta_seconds());
         transform.rotate_z(0.15 * time.delta_seconds());
@@ -365,7 +363,7 @@ fn rotate(time: Res<Time>, mut query: Query<&mut Transform, With<Rotates>>) {
 }
 
 // Change the intensity over time to show that the effect is controlled from the main world
-fn update_settings(mut settings: Query<&mut PostProcessSettings>, time: Res<Time>) {
+pub fn update_settings(mut settings: Query<&mut PostProcessSettings>, time: Res<Time>) {
     for mut setting in &mut settings {
         let mut intensity = time.elapsed_seconds().sin();
         // Make it loop periodically
