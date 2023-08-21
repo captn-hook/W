@@ -1,4 +1,17 @@
+mod setup; 
+mod postprocess;
+
+use bevy::prelude::*;
+
 fn main() {
-    bevy::app::App::new()
+    App::new()
+        .add_plugins((
+            DefaultPlugins.set(AssetPlugin { // Hot reloading shader
+                watch_for_changes: bevy::asset::ChangeWatcher::with_delay(bevy::utils::Duration::from_millis(200)),
+                ..default()
+            }),
+            postprocess::PostProcessPlugin,
+        ))                
+        .add_systems(Startup, setup::setup)
         .run();
 }
