@@ -26,5 +26,6 @@ pub fn default_cube(
 pub fn place_at_hit(
     event: Listener<Pointer<Drag>>,
 ) {
+    info!("place_at_hit cube.rs");
     info!("place_at_hit {:?}", event);
 }

@@ -1,9 +1,8 @@
 use bevy::{prelude::*, render::camera::ScalingMode};
 use bevy_mod_picking::prelude::*;
-use std::fmt::Debug;
+//use std::fmt::Debug;
 //include cube fn from cube.rs
 use crate::cube::*;
-use crate::cursor::*;
 
 pub fn setup(
     mut commands: Commands,
@@ -23,8 +22,6 @@ pub fn setup(
         },
         RaycastPickCamera::default(),
     ));
-    //cursor
-    commands.spawn(cursor(&mut meshes, &mut materials));
     // plane
     commands.spawn((
         PbrBundle {
@@ -52,11 +49,11 @@ pub fn setup(
     });
 }
 
-//get move cursor event and set cursor transform
-pub fn move_cursor<E: Debug + Clone + Reflect>(
-    mut pointer_events: EventReader<Pointer<Move>>,
-) {
-    for event in pointer_events.iter() {
-        info!("{event}");
-    }
-}
+// //get move cursor event and set cursor transform
+// pub fn print<E: Debug + Clone + Reflect>(
+//     mut pointer_events: EventReader<Pointer<Move>>,
+// ) {
+//     for event in pointer_events.iter() {
+//        info!("{event}");
+//     }
+//}
