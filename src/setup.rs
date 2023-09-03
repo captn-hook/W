@@ -42,9 +42,17 @@ pub fn setup(
     
         On::<Pointer<Drag>>::target_component_mut::<Transform>(|drag, transform| {
             //translate x and z axis
-            let divisor = 200.0;
-            transform.translation.x += drag.delta.x / divisor;
-            transform.translation.z += drag.delta.y / divisor;
+         
+            //camera and mouse are at 45 degree angle from the plane, so we need to get part of the x and y delta
+            let sensitivity = [20.0, 40.0];
+            //move the cube half in x and half in y of mouse movement
+            let z_delta = (drag.delta.y - drag.delta.x) / sensitivity[0];
+            let x_delta = (drag.delta.y + drag.delta.x) / sensitivity[1];
+            let divisor = 0.5;
+            //move the cube to the rounded value of the delta
+            transform.translation.z += (z_delta / divisor).round() * divisor;
+            transform.translation.x += (x_delta / divisor).round() * divisor;
+
 
         }),
         On::<Pointer<Click>>::target_commands_mut(|click, target_commands| {
