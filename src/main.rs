@@ -3,6 +3,7 @@ use bevy_mod_picking::prelude::*;
 
 mod setup;
 mod cube;
+mod cursor;
 
 fn main() {
     App::new()
@@ -15,6 +16,6 @@ fn main() {
             bevy_egui::EguiPlugin,
         ))
         .add_systems(Startup, setup::setup)
-        //.add_systems(Update, dropd::spin)
+        .add_systems(Update, setup::move_cursor::<events::Move>)
         .run();
 }

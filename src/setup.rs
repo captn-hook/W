@@ -1,8 +1,9 @@
-use bevy::{prelude::*, render::camera::{ScalingMode, self}};
+use bevy::{prelude::*, render::camera::ScalingMode};
 use bevy_mod_picking::prelude::*;
-
+use std::fmt::Debug;
 //include cube fn from cube.rs
 use crate::cube::*;
+use crate::cursor::*;
 
 pub fn setup(
     mut commands: Commands,
@@ -22,22 +23,24 @@ pub fn setup(
         },
         RaycastPickCamera::default(),
     ));
-
+    //cursor
+    commands.spawn(cursor(&mut meshes, &mut materials));
     // plane
     commands.spawn((
         PbrBundle {
             mesh: meshes.add(shape::Plane::from_size(5.0).into()),
             material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+            transform: Transform::from_xyz(0.0, 0.0, 0.0),
             ..default()
         },
         PickableBundle::default(),
         RaycastPickTarget::default(),
-    ));
-   for i in 1..=5 {
-        commands.spawn((
-            default_cube(Transform::from_xyz(0.0, 1.0 * i as f32, 0.0), 1.0, &mut meshes, &mut materials),
-        ));
-    }
+    ))
+    .with_children(|parent| {
+        for i in 1..=5 {
+            parent.spawn(default_cube(Transform::from_xyz(0.0, 1.0 * i as f32, 0.0), 1.0, &mut meshes, &mut materials));
+        }
+    });
     commands.spawn(PointLightBundle {
         point_light: PointLight {
             intensity: 1500.0,
@@ -47,4 +50,13 @@ pub fn setup(
         transform: Transform::from_xyz(4.0, 8.0, 4.0),
         ..Default::default()
     });
+}
+
+//get move cursor event and set cursor transform
+pub fn move_cursor<E: Debug + Clone + Reflect>(
+    mut pointer_events: EventReader<Pointer<Move>>,
+) {
+    for event in pointer_events.iter() {
+        info!("{event}");
+    }
 }
