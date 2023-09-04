@@ -15,9 +15,12 @@ pub fn move_cursor<E: Debug + Clone + Reflect>(
         for (_cursor, mut transform) in cursor_query.iter_mut() {
             //event.hit.position: Some(Vec3), same for normal, get both
             if let (Some(position), Some(normal)) = (event.hit.position, event.hit.normal) {
-                //set cursor transform to hit position + normal
-                let position = position + normal * 0.1;
-                transform.translation = position;
+                let unit = 1.0;
+                //set cursor transform to hit position + normal aligned to grid
+                let x = (position.x / unit).round() * unit;
+                let y = (position.y / unit).round() * unit;
+                let z = (position.z / unit).round() * unit;
+                transform.translation = Vec3::new(x, y, z) + normal * unit;
                 //set cursor rotation to normal
                 transform.rotation = Quat::from_rotation_arc(Vec3::Y, normal);
             }
