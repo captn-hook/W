@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_mod_picking::prelude::*;
 use std::fmt::Debug;
 
-#[derive(Component)]
+#[derive(Component, Debug, Clone, Reflect, Default)]
 pub struct Cursor3d;
 
 
@@ -12,7 +12,6 @@ pub fn move_cursor<E: Debug + Clone + Reflect>(
     mut cursor_query: Query<(&Cursor3d, &mut Transform)>,
 ) {
     for event in pointer_events.iter() {
-        info!("{event}");
         for (_cursor, mut transform) in cursor_query.iter_mut() {
             //event.hit.position: Some(Vec3), same for normal, get both
             if let (Some(position), Some(normal)) = (event.hit.position, event.hit.normal) {
