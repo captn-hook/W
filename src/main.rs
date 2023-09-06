@@ -4,6 +4,7 @@ use bevy_mod_picking::prelude::*;
 mod setup;
 mod cube;
 mod cursor;
+mod grid;
 
 fn main() {
     App::new()
@@ -21,6 +22,7 @@ fn main() {
         ))
         .add_systems(Update, (
             cursor::move_cursor::<events::Move>,
+            grid::grid,
         ))
         .run();
 }

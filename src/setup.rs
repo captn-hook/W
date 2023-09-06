@@ -22,29 +22,38 @@ pub fn setup(
         },
         RaycastPickCamera::default(),
     ));
-    // plane
+    // plane pickable
     commands.spawn((
         PbrBundle {
             mesh: meshes.add(shape::Plane::from_size(5.0).into()),
-            material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+            material: materials.add(Color::rgba(0.3, 0.5, 0.3, 0.0).into()),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
             ..default()
         },
         PickableBundle::default(),
         RaycastPickTarget::default(),
+    ));
+    //plane visual +.5
+    commands.spawn((
+        PbrBundle {
+            mesh: meshes.add(shape::Plane::from_size(5.0).into()),
+            material: materials.add(Color::rgba(0.3, 0.5, 0.3, 0.5).into()),
+            transform: Transform::from_xyz(0.0, 0.5, 0.0),
+            ..default()
+        },
     ))
     .with_children(|parent| {
         for i in 1..=5 {
-            parent.spawn(default_cube(Transform::from_xyz(0.0, 1.0 * i as f32, 0.0), 1.0, &mut meshes, &mut materials));
+            parent.spawn(default_cube(Transform::from_xyz(0.0, (1.0 * i as f32 - 0.5 ), 0.0), 1.0, &mut meshes, &mut materials));
         }
     });
     commands.spawn(PointLightBundle {
         point_light: PointLight {
-            intensity: 1500.0,
+            intensity: 1000.0,
             shadows_enabled: true,
             ..Default::default()
         },
-        transform: Transform::from_xyz(4.0, 8.0, 4.0),
+        transform: Transform::from_xyz(4.0, 9.0, 6.0),
         ..Default::default()
     });
 }
